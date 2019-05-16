@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,13 +24,33 @@ public class SignUp_Activity extends AppCompatActivity {
         EditText passwordEditText;
         private FirebaseAuth mAuth;
         private String TAG = "TAG";
+        RadioButton prisonerRadioButton;
+        RadioButton jailorRadioButton;
+        boolean selectUserIsTrue;
 
 
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+        selectUserIsTrue = true;
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.jailorRadioB:
+                if (checked)
+                    Toast.makeText(SignUp_Activity.this, "jailor", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.prisonerRadioB:
+                if (checked)
+                    Toast.makeText(SignUp_Activity.this, "prisoner", Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_login_);
+            setContentView(R.layout.activity_sign_up_);
 
             usernameEditText = (EditText)findViewById(R.id.usernameEditText);
             passwordEditText = (EditText)findViewById(R.id.passwordEditText);
@@ -47,7 +68,11 @@ public class SignUp_Activity extends AppCompatActivity {
             // updateUI(currentUser);
         }
 
+
+
         public void onClickLogin(View view) {
+
+            if(selectUserIsTrue){
 
             if(usernameEditText.getText().toString().contains("@") && usernameEditText.getText().toString().length() > 5 && passwordEditText.getText().toString().length() > 5) {
                 mAuth.createUserWithEmailAndPassword(usernameEditText.getText().toString(), passwordEditText.getText().toString())
@@ -76,7 +101,11 @@ public class SignUp_Activity extends AppCompatActivity {
             }
 
 
-        }
+        }else {
+                Toast.makeText(SignUp_Activity.this, "Select Prisoner OR Jailor",
+                        Toast.LENGTH_LONG).show();
+            }
+    }
 
 
 
