@@ -14,6 +14,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.UUID;
 
 public class SignUp_Activity extends AppCompatActivity {
 
@@ -22,11 +26,14 @@ public class SignUp_Activity extends AppCompatActivity {
 
         EditText usernameEditText;
         EditText passwordEditText;
+        EditText nameEditText;
         private FirebaseAuth mAuth;
         private String TAG = "TAG";
-        RadioButton prisonerRadioButton;
-        RadioButton jailorRadioButton;
         boolean selectUserIsTrue;
+        boolean jailorisTrue;
+
+        FirebaseDatabase firebaseDatabase;
+        DatabaseReference databaseReference;
 
 
     public void onRadioButtonClicked(View view) {
@@ -39,12 +46,31 @@ public class SignUp_Activity extends AppCompatActivity {
             case R.id.jailorRadioB:
                 if (checked)
                     Toast.makeText(SignUp_Activity.this, "jailor", Toast.LENGTH_SHORT).show();
+                    jailorisTrue = true;
                 break;
             case R.id.prisonerRadioB:
                 if (checked)
+                    jailorisTrue = false;
                     Toast.makeText(SignUp_Activity.this, "prisoner", Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    public void UpdateFireBase(boolean jailorisTrue , String email , String name , String uuid) {
+
+        DatabaseReference dataRef;
+        if (jailorisTrue){
+            dataRef = databaseReference.child("jailureData");
+    }else{
+            dataRef = databaseReference.child("prisonerData");
+        }
+
+        DatabaseReference uidRef = dataRef.child(uuid);
+        uidRef.child("Name").setValue(name);
+        uidRef.child("Email").setValue(email);
+
+        Log.i("info","success");
+
     }
 
         @Override
@@ -54,10 +80,12 @@ public class SignUp_Activity extends AppCompatActivity {
 
             usernameEditText = (EditText)findViewById(R.id.usernameEditText);
             passwordEditText = (EditText)findViewById(R.id.passwordEditText);
+            nameEditText= (EditText) findViewById(R.id.nameEditText);
 
             mAuth = FirebaseAuth.getInstance();
 
-
+            firebaseDatabase = FirebaseDatabase.getInstance();
+            databaseReference = firebaseDatabase.getReference("UserDATA");
 
         }
         @Override
@@ -83,7 +111,7 @@ public class SignUp_Activity extends AppCompatActivity {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "createUserWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
-                                    //updateUI(user);
+                                    UpdateFireBase(jailorisTrue , usernameEditText.getText().toString() , nameEditText.getText().toString(), user.getUid() );
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w(TAG, "createUserWithEmail:failure", task.getException());
