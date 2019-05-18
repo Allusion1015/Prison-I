@@ -1,5 +1,6 @@
 package com.example.prison_i;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,7 +32,7 @@ public class SignUp_Activity extends AppCompatActivity {
         private String TAG = "TAG";
         boolean selectUserIsTrue;
         boolean jailorisTrue;
-
+        String admin_uId;
         FirebaseDatabase firebaseDatabase;
         DatabaseReference databaseReference;
 
@@ -60,6 +61,7 @@ public class SignUp_Activity extends AppCompatActivity {
 
         DatabaseReference dataRef;
         if (jailorisTrue){
+
             dataRef = databaseReference.child("jailureData");
     }else{
             dataRef = databaseReference.child("prisonerData");
@@ -83,9 +85,11 @@ public class SignUp_Activity extends AppCompatActivity {
             nameEditText= (EditText) findViewById(R.id.nameEditText);
 
             mAuth = FirebaseAuth.getInstance();
-
+            Intent intent=getIntent();
+            admin_uId=intent.getStringExtra("adminUid");
+             admin_uId="ADMIN";
             firebaseDatabase = FirebaseDatabase.getInstance();
-            databaseReference = firebaseDatabase.getReference("UserDATA");
+            databaseReference = firebaseDatabase.getReference(admin_uId);
 
         }
         @Override

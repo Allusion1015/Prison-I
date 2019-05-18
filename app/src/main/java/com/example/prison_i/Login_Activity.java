@@ -1,5 +1,6 @@
 package com.example.prison_i;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,19 +21,21 @@ public class Login_Activity extends AppCompatActivity {
     EditText passwordEditText;
     private FirebaseAuth mAuth;
     private  String TAG ="TAG :";
-
-
-
+    String prev_uId;
+Intent navIntent;
+Intent SignUpIntent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_);
-
+setTitle("Jailor Login");
         usernameEditText = (EditText)findViewById(R.id.usernameEditText);
         passwordEditText = (EditText)findViewById(R.id.passwordEditText);
-
+navIntent=new Intent(getApplicationContext(),Prisoners_NavDrawAct.class);
+SignUpIntent=new Intent(getApplicationContext(),SignUp_Activity.class);
        mAuth = FirebaseAuth.getInstance();
-
+        Intent intent=getIntent();
+        prev_uId=intent.getStringExtra("UId");
 
 
     }
@@ -58,6 +61,7 @@ public class Login_Activity extends AppCompatActivity {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "signInWithEmail:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
+                                startActivity(navIntent);
                                 //updateUI(user);
                             } else {
                                 // If sign in fails, display a message to the user.
@@ -75,6 +79,12 @@ public class Login_Activity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    public void onClickSignUp(View view)
+    {Intent mIntent=new Intent(Login_Activity.this,SignUp_Activity.class);
+        navIntent.putExtra("adminUid",prev_uId);
+        startActivity(SignUpIntent);
     }
 
 
