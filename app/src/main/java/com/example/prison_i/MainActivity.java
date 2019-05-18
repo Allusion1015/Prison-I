@@ -19,11 +19,12 @@ public class MainActivity extends AppCompatActivity {
 
     Intent JailorLoginIntent;
     Intent AdminSignUpIntent;
-    Intent SignUPIntent;
+
     EditText usernameEditText;
     EditText passwordEditText;
     private FirebaseAuth mAuth;
     private  String TAG ="TAG :";
+    Intent intent;
 
 
     @Override
@@ -41,15 +42,17 @@ findViewById(R.id.button).setOnClickListener(new View.OnClickListener(){
         mAuth = FirebaseAuth.getInstance();
 
         AdminSignUpIntent = new Intent(getApplicationContext(),AdminSignUp.class);
-        SignUPIntent = new Intent(getApplicationContext(),SignUp_Activity.class);
+        //SignUPIntent = new Intent(getApplicationContext(),SignUp_Activity.class);
 
         JailorLoginIntent=new Intent(getApplicationContext(),Login_Activity.class);
-        findViewById(R.id.IntentCallSignUP).setOnClickListener(new View.OnClickListener() {
+       /* findViewById(R.id.IntentCallSignUP).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(SignUPIntent);
             }
         });
+*/
+        //intent=new Intent(getApplicationContext() , Login_Activity.class);
     }
 
     @Override
@@ -60,6 +63,8 @@ findViewById(R.id.button).setOnClickListener(new View.OnClickListener(){
         //Toast.makeText(MainActivity.this, mAuth.getCurrentUser().getUid() + "value" , Toast.LENGTH_SHORT).show();
         // updateUI(currentUser);
     }
+
+
 
     public void onClickLogin(View view) {
 
@@ -74,8 +79,11 @@ findViewById(R.id.button).setOnClickListener(new View.OnClickListener(){
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "signInWithEmail:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
-                                Intent intent=new Intent(MainActivity.this,Login_Activity.class);
-                                intent.putExtra("UId",user.getUid());
+
+                                String UId = user.getUid();
+                                Log.i("adminID", UId + "null");
+
+                                JailorLoginIntent.putExtra("UId",UId);
 
                                 startActivity(JailorLoginIntent);
                                 //updateUI(user);

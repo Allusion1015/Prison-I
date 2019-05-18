@@ -60,12 +60,9 @@ public class SignUp_Activity extends AppCompatActivity {
     public void UpdateFireBase(boolean jailorisTrue , String email , String name , String uuid) {
 
         DatabaseReference dataRef;
-        if (jailorisTrue){
 
-            dataRef = databaseReference.child("jailureData");
-    }else{
             dataRef = databaseReference.child("prisonerData");
-        }
+
 
         DatabaseReference uidRef = dataRef.child(uuid);
         uidRef.child("Name").setValue(name);
@@ -87,7 +84,8 @@ public class SignUp_Activity extends AppCompatActivity {
             mAuth = FirebaseAuth.getInstance();
             Intent intent=getIntent();
             admin_uId=intent.getStringExtra("adminUid");
-             admin_uId="ADMIN";
+            Log.i("adminID",admin_uId+"44");
+             //admin_uId="ADMIN";
             firebaseDatabase = FirebaseDatabase.getInstance();
             databaseReference = firebaseDatabase.getReference(admin_uId);
 
