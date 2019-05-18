@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,9 +17,26 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class Prisoners_NavDrawAct extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Intent signUpIntent;
+    RecyclerView recyclerView;
+    String[] NameArray = {"akash"};
+
+
+
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +44,35 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
 
         setTitle("Prisoners");
         signUpIntent=new Intent(getApplicationContext(),SignUp_Activity.class);
+
+
+        recyclerView = (RecyclerView)findViewById(R.id.RecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("HIvqSWR8TqQrDZL9z5lqTc6RXRH2");
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    String message = ds.getValue(String.class);
+                    // String name = ds.child("name").getValue(String.class);
+                    Log.d("TAG", message  +  "null");
+                    //textView.setText(message);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("TAG", "Failed to read value.", error.toException());
+            }
+        });
+
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -45,7 +94,14 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        recyclerView.setAdapter(new AdapterProgram(NameArray));
     }
+
+
+
+
 
     @Override
     public void onBackPressed() {
@@ -57,12 +113,19 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
         }
     }
 
+
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.prisoners__nav_draw, menu);
         return true;
     }
+
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -78,6 +141,9 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
