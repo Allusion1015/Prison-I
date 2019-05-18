@@ -24,6 +24,9 @@ public class Login_Activity extends AppCompatActivity {
     String prev_uId;
 Intent navIntent;
 Intent SignUpIntent;
+    Intent mIntent;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +39,8 @@ SignUpIntent=new Intent(getApplicationContext(),SignUp_Activity.class);
        mAuth = FirebaseAuth.getInstance();
         Intent intent=getIntent();
         prev_uId=intent.getStringExtra("UId");
+        Log.i("prevUID :", prev_uId+"54");
+       mIntent=new Intent(Login_Activity.this,SignUp_Activity.class);
 
 
     }
@@ -82,8 +87,8 @@ SignUpIntent=new Intent(getApplicationContext(),SignUp_Activity.class);
     }
 
     public void onClickSignUp(View view)
-    {Intent mIntent=new Intent(Login_Activity.this,SignUp_Activity.class);
-        navIntent.putExtra("adminUid",prev_uId);
+    {
+        SignUpIntent.putExtra("adminUid",prev_uId);
         startActivity(SignUpIntent);
     }
 

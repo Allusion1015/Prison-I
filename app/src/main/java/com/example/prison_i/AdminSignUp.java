@@ -29,6 +29,7 @@ public class AdminSignUp extends AppCompatActivity {
     int variable;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
+    Intent intent;
 
 
 
@@ -56,6 +57,8 @@ public class AdminSignUp extends AppCompatActivity {
         usernameEditText = (EditText)findViewById(R.id.usernameEditText);
         passwordEditText = (EditText)findViewById(R.id.passwordEditText);
         nameEditText= (EditText) findViewById(R.id.nameEditText);
+
+       // intent =new Intent(AdminSignUp.this,Login_Activity.class);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -88,8 +91,8 @@ public class AdminSignUp extends AppCompatActivity {
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 variable=1;
                                 UpdateFireBase(variable,usernameEditText.getText().toString() , nameEditText.getText().toString(), user.getUid() );
-                                Intent intent=new Intent(AdminSignUp.this,Login_Activity.class);
-                                intent.putExtra("UId",user.getUid());
+                                Log.i("adminID", user.getUid());
+                                JailorLoginIntent.putExtra("UId",user.getUid());
 
                                 startActivity(JailorLoginIntent);
                             } else {
