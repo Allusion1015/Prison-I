@@ -17,10 +17,14 @@ import android.view.MenuItem;
 public class Prisoners_NavDrawAct extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Intent signUpIntent;
+    String adminId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prisoners__nav_draw);
+
+        Intent intent=getIntent();
+        adminId=intent.getStringExtra("UId");
 
         setTitle("Prisoners");
         signUpIntent=new Intent(getApplicationContext(),SignUp_Activity.class);
@@ -86,6 +90,7 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_addPrisoner) {
+        signUpIntent.putExtra("UId",adminId);
             startActivity(signUpIntent);
             // Handle the camera action
         } else if (id == R.id.nav_contactJailor) {
