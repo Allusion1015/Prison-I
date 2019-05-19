@@ -66,7 +66,7 @@ if(jailorisTrue)
 }
 else
 {dataRef = databaseReference.child("ADMIN").child(admin_uId).child("prisonerData");
-    assignAdminnUidPrisoner=databaseReference.child("ADMIN").child("prisonersAdminUId");
+    assignAdminnUidPrisoner=firebaseDatabase.getReference("ADMIN").child("prisonersAdminUId");
     assignAdminnUidPrisoner.child("AdminUid").setValue(admin_uId);
 }
         dataRef.child("UID").setValue(uuid);
