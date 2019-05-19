@@ -29,7 +29,7 @@ public class prisoner_Login_W extends AppCompatActivity implements SensorEventLi
     private  String TAG ="TAG :";
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
-
+    DatabaseReference dataRef;
     String curUsrId;
 
     boolean loginSuccess;
@@ -80,7 +80,7 @@ public class prisoner_Login_W extends AppCompatActivity implements SensorEventLi
         if(activityRunning){
             stepView.setText(String.valueOf(event.values[0]));
             if(loginSuccess)
-            {databaseReference.child("StepCount").setValue(String.valueOf(event.values[0]));}
+            {dataRef.child("StepCount").setValue(String.valueOf(event.values[0]));}
         }
     }
 
@@ -106,7 +106,14 @@ public class prisoner_Login_W extends AppCompatActivity implements SensorEventLi
                                 Toast.makeText(prisoner_Login_W.this, "Authentication sucessful. "+user.getUid(), Toast.LENGTH_SHORT).show();
                                 loginSuccess=true;
                                 curUsrId=user.getUid();
-                                databaseReference = firebaseDatabase.getReference(curUsrId);
+                                DatabaseReference toAccessAdminUid=firebaseDatabase.getReference("ADMIN");
+                                //DatabaseReference temp=toAccessAdminUid.child("prisonersAdminUId").child(curUsrId);
+                                //String adminUidFromPrisoner=temp.child("AdminUid");
+
+                                //databaseReference=firebaseDatabase.getReference(adminUidFromPrisoner);
+                                dataRef = databaseReference.child("prisonerData").child("UID").child(curUsrId);
+
+
                             } else {
                                 loginSuccess=false;
 

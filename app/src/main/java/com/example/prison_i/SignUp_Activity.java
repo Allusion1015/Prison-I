@@ -23,7 +23,7 @@ import java.util.UUID;
 public class SignUp_Activity extends AppCompatActivity {
 
 
-
+DatabaseReference assignAdminnUidPrisoner;
 
         EditText usernameEditText;
         EditText passwordEditText;
@@ -61,12 +61,17 @@ public class SignUp_Activity extends AppCompatActivity {
 
         DatabaseReference dataRef;
 if(jailorisTrue)
-{dataRef = databaseReference.child("jailorData");}
+{dataRef = databaseReference.child("ADMIN").child(admin_uId).child("jailorData");
+
+}
 else
-{dataRef = databaseReference.child("prisonerData");}
+{dataRef = databaseReference.child("ADMIN").child(admin_uId).child("prisonerData");
+    assignAdminnUidPrisoner=databaseReference.child("ADMIN").child("prisonersAdminUId");
+    assignAdminnUidPrisoner.child("AdminUid").setValue(admin_uId);
+}
+        dataRef.child("UID").setValue(uuid);
 
-
-        DatabaseReference uidRef = dataRef.child(uuid);
+        DatabaseReference uidRef = dataRef.child("UID");
         uidRef.child("Name").setValue(name);
         uidRef.child("Email").setValue(email);
 
