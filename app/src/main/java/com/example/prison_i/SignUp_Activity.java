@@ -1,5 +1,6 @@
 package com.example.prison_i;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,7 +23,7 @@ import java.util.UUID;
 public class SignUp_Activity extends AppCompatActivity {
 
 
-
+DatabaseReference assignAdminnUidPrisoner;
 
         EditText usernameEditText;
         EditText passwordEditText;
@@ -31,7 +32,7 @@ public class SignUp_Activity extends AppCompatActivity {
         private String TAG = "TAG";
         boolean selectUserIsTrue;
         boolean jailorisTrue;
-
+        String admin_uId;
         FirebaseDatabase firebaseDatabase;
         DatabaseReference databaseReference;
 
@@ -59,13 +60,18 @@ public class SignUp_Activity extends AppCompatActivity {
     public void UpdateFireBase(boolean jailorisTrue , String email , String name , String uuid) {
 
         DatabaseReference dataRef;
-        if (jailorisTrue){
-            dataRef = databaseReference.child("jailureData");
-    }else{
-            dataRef = databaseReference.child("prisonerData");
-        }
+if(jailorisTrue)
+{dataRef = databaseReference.child("ADMIN").child(admin_uId).child("jailorData");
 
-        DatabaseReference uidRef = dataRef.child(uuid);
+}
+else
+{dataRef = databaseReference.child("ADMIN").child(admin_uId).child("prisonerData");
+    assignAdminnUidPrisoner=databaseReference.child("ADMIN").child("prisonersAdminUId");
+    assignAdminnUidPrisoner.child("AdminUid").setValue(admin_uId);
+}
+        dataRef.child("UID").setValue(uuid);
+
+        DatabaseReference uidRef = dataRef.child("UID");
         uidRef.child("Name").setValue(name);
         uidRef.child("Email").setValue(email);
 
@@ -83,9 +89,12 @@ public class SignUp_Activity extends AppCompatActivity {
             nameEditText= (EditText) findViewById(R.id.nameEditText);
 
             mAuth = FirebaseAuth.getInstance();
-
+            Intent intent=getIntent();
+            admin_uId=intent.getStringExtra("UId");
+            Log.i("adminID",admin_uId+"44");
+             //admin_uId="ADMIN";
             firebaseDatabase = FirebaseDatabase.getInstance();
-            databaseReference = firebaseDatabase.getReference("UserDATA");
+            databaseReference = firebaseDatabase.getReference(admin_uId);
 
         }
         @Override
