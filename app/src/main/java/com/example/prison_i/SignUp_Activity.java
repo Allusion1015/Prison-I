@@ -1,3 +1,4 @@
+//PrisonerDATA
 package com.example.prison_i;
 
 import android.content.Intent;
@@ -60,6 +61,7 @@ DatabaseReference assignAdminnUidPrisoner;
     public void UpdateFireBase(boolean jailorisTrue , String email , String name , String uuid) {
 
         DatabaseReference dataRef;
+//<<<<<<< AkanshA0
 if(jailorisTrue)
 {dataRef = databaseReference.child("ADMIN").child(admin_uId).child("jailorData");
 
@@ -69,9 +71,15 @@ else
     assignAdminnUidPrisoner=databaseReference.child("ADMIN").child("prisonersAdminUId");
     assignAdminnUidPrisoner.child("AdminUid").setValue(admin_uId);
 }
-        dataRef.child("UID").setValue(uuid);
+  //      dataRef.child("UID").setValue(uuid);
 
-        DatabaseReference uidRef = dataRef.child("UID");
+//=======
+
+            dataRef = databaseReference.child("prisonerData");
+
+    //        dataRef.child("UID").setValue(uuid);
+//>>>>>>> master
+        DatabaseReference uidRef = dataRef.child(uuid);
         uidRef.child("Name").setValue(name);
         uidRef.child("Email").setValue(email);
 

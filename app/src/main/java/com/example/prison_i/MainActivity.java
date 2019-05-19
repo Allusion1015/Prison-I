@@ -36,8 +36,12 @@ public class MainActivity extends AppCompatActivity {
         usernameEditText = (EditText)findViewById(R.id.usernameEditText);
         passwordEditText = (EditText)findViewById(R.id.passwordEditText);
 
+//<<<<<<< AkanshA0
         prisonerLoginIntent=new Intent(getApplicationContext(),prisoner_Login_W.class);
-        AdminSignUpIntent = new Intent(getApplicationContext(),AdminSignUp.class);
+  //      AdminSignUpIntent = new Intent(getApplicationContext(),AdminSignUp.class);
+//=======
+        AdminSignUpIntent = new Intent(getApplicationContext(),Prisoners_NavDrawAct.class);
+//>>>>>>> master
         //SignUPIntent = new Intent(getApplicationContext(),SignUp_Activity.class);
 
         JailorLoginIntent=new Intent(getApplicationContext(),Login_Activity.class);
