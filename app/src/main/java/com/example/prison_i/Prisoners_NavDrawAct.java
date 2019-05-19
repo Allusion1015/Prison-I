@@ -2,6 +2,7 @@ package com.example.prison_i;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,7 +24,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Prisoners_NavDrawAct extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -31,6 +38,8 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
     RecyclerView recyclerView;
     String[] NameArray = {"","","",""};
     String[] EmailArray = {"","","",""};
+    String[] PrisonersKeyValue;
+    List<PrisonerUID> PrisonerUIDlist;
 
 
 
@@ -50,7 +59,7 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
         setTitle("Prisoners");
         signUpIntent=new Intent(getApplicationContext(),SignUp_Activity.class);
 
-
+        PrisonerUIDlist = new ArrayList<>();
         recyclerView = (RecyclerView)findViewById(R.id.RecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -60,39 +69,46 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
         DatabaseReference databaseReference2 = databaseReference.child("prisonerData").child("sTjfAltD4vf1gLp1dNiIxdz27Gs1");
 
 
-
-        databaseReference2.addValueEventListener(new ValueEventListener() {
+        databaseReference.child("prisonerData").addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int NumberOfPrisoners = (int)dataSnapshot.getChildrenCount();
+                Log.i("No. of Prisoners", String.valueOf(NumberOfPrisoners));
+                PrisonersKeyValue = new String[NumberOfPrisoners];
+
+                PrisonerUID prisonerUID = dataSnapshot.getValue(PrisonerUID.class);
 
 
-                NameArray[counter] =  dataSnapshot.child("Name").getValue().toString();
-                EmailArray[counter] =  dataSnapshot.child("Email").getValue().toString();
+                try {
+                    JSONObject jsonObject = new JSONObject(dataSnapshot.getValue().toString());
+                    Log.i ("pUID " , jsonObject.getString("sTjfAltD4vf1gLp1dNiIxdz27Gs1"));
+                    JSONObject jsonObjectforEmail = new JSONObject(jsonObject.getString("sTjfAltD4vf1gLp1dNiIxdz27Gs1"));
+                    Log.i ("Email  " , jsonObjectforEmail.getString("Email"));
+                    Log.i ("Email  " , jsonObjectforEmail.getString("Name"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+             /*   JSONArray weatherArray = new JSONArray(dataSnapshot.getValue().toString());
+                for(int i = 0; i<=weatherArray.length() ; i++ ){
+                    JSONObject weatherArrayPart = weatherArray.getJSONObject(i);
+                    String main = weatherArrayPart.getString("main");
+                    String description = weatherArrayPart.getString("description");
+                    Log.i("info :",  main);
+                    Log.i("info :", description );
+                }
+          */      Log.i ("pUID " , dataSnapshot.getValue().toString());
 
-                Log.d("TAG",  dataSnapshot.child("Name").getValue() + "null1234");
-                recyclerView.setAdapter(new AdapterProgram(NameArray,EmailArray));
-             /*       int counter = 0;
-                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                //Error
 
-                    String message = ds.getValue(String.class);
-
-                    NameArray[counter] = message;
-                    // String name = ds.child("name").getValue(String.class);
-                    Log.d("TAG_array", NameArray[counter]+ message  +  "null");
-                    //textView.setText(message);
-                    counter++;
-                }*/
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w("TAG", "Failed to read value.", error.toException());
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
+
+        fromFirebaseToAdapterSender(databaseReference2);
+
 
 
 
@@ -191,5 +207,25 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public  void fromFirebaseToAdapterSender(DatabaseReference databaseReference){
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                NameArray[counter] =  dataSnapshot.child("Name").getValue().toString();
+                EmailArray[counter] =  dataSnapshot.child("Email").getValue().toString();
+                Log.d("TAG",  dataSnapshot.child("Name").getValue() + "null1234");
+                recyclerView.setAdapter(new AdapterProgram(NameArray,EmailArray));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("TAG", "Failed to read value.", error.toException());
+            }
+        });
     }
 }

@@ -64,8 +64,8 @@ public class SignUp_Activity extends AppCompatActivity {
 
             dataRef = databaseReference.child("prisonerData");
 
-
-        DatabaseReference uidRef = dataRef.child(uuid);
+            dataRef.child("UID").setValue(uuid);
+        DatabaseReference uidRef = dataRef.child("UID");
         uidRef.child("Name").setValue(name);
         uidRef.child("Email").setValue(email);
 
