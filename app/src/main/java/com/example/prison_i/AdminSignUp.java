@@ -58,6 +58,7 @@ public class AdminSignUp extends AppCompatActivity {
         passwordEditText = (EditText)findViewById(R.id.passwordEditText);
         nameEditText= (EditText) findViewById(R.id.nameEditText);
 
+        setTitle("ADMIN SignUp");
        // intent =new Intent(AdminSignUp.this,Login_Activity.class);
 
         mAuth = FirebaseAuth.getInstance();

@@ -66,6 +66,7 @@ SignUpIntent=new Intent(getApplicationContext(),SignUp_Activity.class);
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d(TAG, "signInWithEmail:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
+                                navIntent.putExtra("UId",prev_uId);
                                 startActivity(navIntent);
                                 //updateUI(user);
                             } else {
@@ -88,7 +89,7 @@ SignUpIntent=new Intent(getApplicationContext(),SignUp_Activity.class);
 
     public void onClickSignUp(View view)
     {
-        SignUpIntent.putExtra("adminUid",prev_uId);
+        SignUpIntent.putExtra("UId",prev_uId);
         startActivity(SignUpIntent);
     }
 

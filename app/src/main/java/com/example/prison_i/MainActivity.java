@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     Intent JailorLoginIntent;
     Intent AdminSignUpIntent;
+    Intent prisonerLoginIntent;
 
     EditText usernameEditText;
     EditText passwordEditText;
@@ -34,17 +35,30 @@ public class MainActivity extends AppCompatActivity {
         setTitle("ADMIN LOGIN");
         usernameEditText = (EditText)findViewById(R.id.usernameEditText);
         passwordEditText = (EditText)findViewById(R.id.passwordEditText);
-findViewById(R.id.button).setOnClickListener(new View.OnClickListener(){
+
+//<<<<<<< AkanshA0
+        prisonerLoginIntent=new Intent(getApplicationContext(),prisoner_Login_W.class);
+  //      AdminSignUpIntent = new Intent(getApplicationContext(),AdminSignUp.class);
+//=======
+        AdminSignUpIntent = new Intent(getApplicationContext(),Prisoners_NavDrawAct.class);
+//>>>>>>> master
+        //SignUPIntent = new Intent(getApplicationContext(),SignUp_Activity.class);
+
+        JailorLoginIntent=new Intent(getApplicationContext(),Login_Activity.class);
+
+
+        findViewById(R.id.button).setOnClickListener(new View.OnClickListener(){
     public void onClick(View v){
         startActivity(AdminSignUpIntent);
     }
 });
-        mAuth = FirebaseAuth.getInstance();
+        findViewById(R.id.btnPrisonerLogin).setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                startActivity(prisonerLoginIntent);
+            }
+        });
+mAuth = FirebaseAuth.getInstance();
 
-        AdminSignUpIntent = new Intent(getApplicationContext(),Prisoners_NavDrawAct.class);
-        //SignUPIntent = new Intent(getApplicationContext(),SignUp_Activity.class);
-
-        JailorLoginIntent=new Intent(getApplicationContext(),Login_Activity.class);
        /* findViewById(R.id.IntentCallSignUP).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

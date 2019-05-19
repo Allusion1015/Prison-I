@@ -24,7 +24,7 @@ import java.util.UUID;
 public class SignUp_Activity extends AppCompatActivity {
 
 
-
+DatabaseReference assignAdminnUidPrisoner;
 
         EditText usernameEditText;
         EditText passwordEditText;
@@ -61,11 +61,25 @@ public class SignUp_Activity extends AppCompatActivity {
     public void UpdateFireBase(boolean jailorisTrue , String email , String name , String uuid) {
 
         DatabaseReference dataRef;
+//<<<<<<< AkanshA0
+if(jailorisTrue)
+{dataRef = databaseReference.child("ADMIN").child(admin_uId).child("jailorData");
+
+}
+else
+{dataRef = databaseReference.child("ADMIN").child(admin_uId).child("prisonerData");
+    assignAdminnUidPrisoner=databaseReference.child("ADMIN").child("prisonersAdminUId");
+    assignAdminnUidPrisoner.child("AdminUid").setValue(admin_uId);
+}
+  //      dataRef.child("UID").setValue(uuid);
+
+//=======
 
             dataRef = databaseReference.child("prisonerData");
 
-            dataRef.child("UID").setValue(uuid);
-        DatabaseReference uidRef = dataRef.child("UID");
+    //        dataRef.child("UID").setValue(uuid);
+//>>>>>>> master
+        DatabaseReference uidRef = dataRef.child(uuid);
         uidRef.child("Name").setValue(name);
         uidRef.child("Email").setValue(email);
 
@@ -84,7 +98,7 @@ public class SignUp_Activity extends AppCompatActivity {
 
             mAuth = FirebaseAuth.getInstance();
             Intent intent=getIntent();
-            admin_uId=intent.getStringExtra("adminUid");
+            admin_uId=intent.getStringExtra("UId");
             Log.i("adminID",admin_uId+"44");
              //admin_uId="ADMIN";
             firebaseDatabase = FirebaseDatabase.getInstance();

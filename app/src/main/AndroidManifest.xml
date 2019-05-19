@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.prison_i">
+    <uses-feature android:name="android.hardware.sensor.stepcounter"/>
+    <uses-feature android:name="android.hardware.sensor.stepdetector"/>
 
     <application
         android:allowBackup="true"
@@ -9,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AdminSignUp"></activity>
+        <activity android:name=".prisoner_Login_W"></activity>
+        <activity android:name=".AdminSignUp" />
         <activity
             android:name=".Prisoners_NavDrawAct"
             android:label="@string/title_activity_prisoners__nav_draw"
