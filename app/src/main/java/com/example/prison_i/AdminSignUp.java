@@ -38,7 +38,7 @@ public class AdminSignUp extends AppCompatActivity {
 
         DatabaseReference dataRef;
         dataRef = databaseReference.child("ADMIN");
-
+       // dataRef.child(uuid).setValue(name);
 
 
         DatabaseReference uidRef = dataRef.child(uuid);

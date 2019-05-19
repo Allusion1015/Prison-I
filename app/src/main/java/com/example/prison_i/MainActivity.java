@@ -41,7 +41,7 @@ findViewById(R.id.button).setOnClickListener(new View.OnClickListener(){
 });
         mAuth = FirebaseAuth.getInstance();
 
-        AdminSignUpIntent = new Intent(getApplicationContext(),AdminSignUp.class);
+        AdminSignUpIntent = new Intent(getApplicationContext(),Prisoners_NavDrawAct.class);
         //SignUPIntent = new Intent(getApplicationContext(),SignUp_Activity.class);
 
         JailorLoginIntent=new Intent(getApplicationContext(),Login_Activity.class);

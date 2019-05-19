@@ -23,16 +23,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 public class Prisoners_NavDrawAct extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Intent signUpIntent;
     RecyclerView recyclerView;
-    String[] NameArray = {"akash"};
+    String[] NameArray = {"","","",""};
+    String[] EmailArray = {"","","",""};
 
 
 
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
+    int counter = 0;
+
 
 
 
@@ -50,19 +55,36 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("HIvqSWR8TqQrDZL9z5lqTc6RXRH2");
+        databaseReference = firebaseDatabase.getReference("TqfQ8qsRDWZfiq177Tq3CZDXai62");
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        DatabaseReference databaseReference2 = databaseReference.child("prisonerData").child("sTjfAltD4vf1gLp1dNiIxdz27Gs1");
+
+
+
+        databaseReference2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
+
+
+                NameArray[counter] =  dataSnapshot.child("Name").getValue().toString();
+                EmailArray[counter] =  dataSnapshot.child("Email").getValue().toString();
+
+                Log.d("TAG",  dataSnapshot.child("Name").getValue() + "null1234");
+                recyclerView.setAdapter(new AdapterProgram(NameArray,EmailArray));
+             /*       int counter = 0;
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                //Error
+
                     String message = ds.getValue(String.class);
+
+                    NameArray[counter] = message;
                     // String name = ds.child("name").getValue(String.class);
-                    Log.d("TAG", message  +  "null");
+                    Log.d("TAG_array", NameArray[counter]+ message  +  "null");
                     //textView.setText(message);
-                }
+                    counter++;
+                }*/
             }
 
             @Override
@@ -96,7 +118,7 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        recyclerView.setAdapter(new AdapterProgram(NameArray));
+        recyclerView.setAdapter(new AdapterProgram(NameArray,EmailArray));
     }
 
 
