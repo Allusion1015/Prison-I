@@ -18,19 +18,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+
 
 public class Prisoners_NavDrawAct extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -49,6 +47,8 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     int counter = 0;
+    ArrayList<String> prisonerNames;
+    ArrayList<String> prisonerEmail;
 
 
 
@@ -62,6 +62,7 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
 
         Intent intent=getIntent();
         adminId=intent.getStringExtra("UId");
+        adminId = "oiOWeQSV5NSI2rI4vUjYQp1nvE52";
 
         setTitle("Prisoners");
         signUpIntent=new Intent(getApplicationContext(),SignUp_Activity.class);
@@ -71,42 +72,34 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("TqfQ8qsRDWZfiq177Tq3CZDXai62");
-
-        DatabaseReference databaseReference2 = databaseReference.child("prisonerData").child("sTjfAltD4vf1gLp1dNiIxdz27Gs1");
+        databaseReference = firebaseDatabase.getReference("ADMIN/"+adminId+"/prisonerData");
 
 
-        databaseReference.child("prisonerData").addValueEventListener(new ValueEventListener() {
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                 int NumberOfPrisoners = (int)dataSnapshot.getChildrenCount();
-                Log.i("No. of Prisoners", String.valueOf(NumberOfPrisoners));
-                PrisonersKeyValue = new String[NumberOfPrisoners];
 
-                PrisonerUID prisonerUID = dataSnapshot.getValue(PrisonerUID.class);
+                Iterable<DataSnapshot> chlNames = dataSnapshot.getChildren();
+                Log.i("No. of Prisoners", String.valueOf(NumberOfPrisoners) );
+                prisonerNames = new ArrayList<String>();
+                prisonerEmail = new ArrayList<String>();
+                counter = 0;
+                for (DataSnapshot contact : chlNames) {
+                    prisonerNames.add(dataSnapshot.child(contact.getKey()).child("Email").getValue().toString());
+                    prisonerEmail.add(dataSnapshot.child(contact.getKey()).child("Name").getValue().toString());
 
+                    NameArray[counter] = dataSnapshot.child(contact.getKey()).child("Name").getValue().toString();
+                    EmailArray[counter] = dataSnapshot.child(contact.getKey()).child("Email").getValue().toString();
+                    Log.d("prisonersID :: ",  prisonerNames.get(0)+"      " + prisonerEmail.get(0) );
+                    counter++;
 
-                try {
-                    JSONObject jsonObject = new JSONObject(dataSnapshot.getValue().toString());
-                    Log.i ("pUID " , jsonObject.getString("sTjfAltD4vf1gLp1dNiIxdz27Gs1"));
-                    JSONObject jsonObjectforEmail = new JSONObject(jsonObject.getString("sTjfAltD4vf1gLp1dNiIxdz27Gs1"));
-                    Log.i ("Email  " , jsonObjectforEmail.getString("Email"));
-                    Log.i ("Email  " , jsonObjectforEmail.getString("Name"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-             /*   JSONArray weatherArray = new JSONArray(dataSnapshot.getValue().toString());
-                for(int i = 0; i<=weatherArray.length() ; i++ ){
-                    JSONObject weatherArrayPart = weatherArray.getJSONObject(i);
-                    String main = weatherArrayPart.getString("main");
-                    String description = weatherArrayPart.getString("description");
-                    Log.i("info :",  main);
-                    Log.i("info :", description );
-                }
-          */      Log.i ("pUID " , dataSnapshot.getValue().toString());
+                recyclerView.setAdapter(new AdapterProgram(NameArray,EmailArray));
 
-
-            }
+              }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -114,7 +107,8 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
             }
         });
 
-        fromFirebaseToAdapterSender(databaseReference2);
+
+
 
 
 
@@ -217,23 +211,5 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
         return true;
     }
 
-    public  void fromFirebaseToAdapterSender(DatabaseReference databaseReference){
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                NameArray[counter] =  dataSnapshot.child("Name").getValue().toString();
-                EmailArray[counter] =  dataSnapshot.child("Email").getValue().toString();
-                Log.d("TAG",  dataSnapshot.child("Name").getValue() + "null1234");
-                recyclerView.setAdapter(new AdapterProgram(NameArray,EmailArray));
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w("TAG", "Failed to read value.", error.toException());
-            }
-        });
-    }
 }
