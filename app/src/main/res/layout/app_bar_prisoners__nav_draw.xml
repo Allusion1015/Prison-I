@@ -20,7 +20,8 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_prisoners__nav_draw" />
+
+    <include layout="@layout/content_main_act_nav_drawer" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
