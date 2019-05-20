@@ -39,6 +39,7 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
     RecyclerView recyclerView;
     String[] NameArray = {"","","",""};
     String[] EmailArray = {"","","",""};
+    String[] StepsArray = {"","","",""};
     String[] PrisonersKeyValue;
     List<PrisonerUID> PrisonerUIDlist;
 
@@ -49,6 +50,7 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
     int counter = 0;
     ArrayList<String> prisonerNames;
     ArrayList<String> prisonerEmail;
+    ArrayList<String> prisonerStepCount;
 
 
 
@@ -62,7 +64,6 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
 
         Intent intent=getIntent();
         adminId=intent.getStringExtra("UId");
-        adminId = "oiOWeQSV5NSI2rI4vUjYQp1nvE52";
 
         setTitle("Prisoners");
         signUpIntent=new Intent(getApplicationContext(),SignUp_Activity.class);
@@ -86,18 +87,20 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
                 Log.i("No. of Prisoners", String.valueOf(NumberOfPrisoners) );
                 prisonerNames = new ArrayList<String>();
                 prisonerEmail = new ArrayList<String>();
+                prisonerStepCount = new ArrayList<String>();
                 counter = 0;
                 for (DataSnapshot contact : chlNames) {
-                    prisonerNames.add(dataSnapshot.child(contact.getKey()).child("Email").getValue().toString());
-                    prisonerEmail.add(dataSnapshot.child(contact.getKey()).child("Name").getValue().toString());
+                   // prisonerNames.add(dataSnapshot.child(contact.getKey()).child("Email").getValue().toString());
+                    //prisonerEmail.add(dataSnapshot.child(contact.getKey()).child("Name").getValue().toString());
 
                     NameArray[counter] = dataSnapshot.child(contact.getKey()).child("Name").getValue().toString();
                     EmailArray[counter] = dataSnapshot.child(contact.getKey()).child("Email").getValue().toString();
-                    Log.d("prisonersID :: ",  prisonerNames.get(0)+"      " + prisonerEmail.get(0) );
+                    StepsArray[counter] =  dataSnapshot.child(contact.getKey()).child("StepCount").getValue().toString();
+                    Log.d("prisonersID :: ",  NameArray[counter] +"      " + EmailArray[counter] );
                     counter++;
 
                 }
-                recyclerView.setAdapter(new AdapterProgram(NameArray,EmailArray));
+                recyclerView.setAdapter(new AdapterProgram(NameArray,EmailArray,StepsArray));
 
               }
 
@@ -135,7 +138,7 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        recyclerView.setAdapter(new AdapterProgram(NameArray,EmailArray));
+        recyclerView.setAdapter(new AdapterProgram(NameArray,EmailArray,StepsArray));
     }
 
 

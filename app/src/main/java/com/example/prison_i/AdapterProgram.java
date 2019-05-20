@@ -11,17 +11,17 @@ import android.widget.TextView;
 public class AdapterProgram extends RecyclerView.Adapter<AdapterProgram.ProgramViewHolder>{
 
     private  String[] userNameData;
-    //private String[] userServiceData;
+    private String[] userStepsData;
    // private String[] userAddressData;
     private String[] userStatusText;
    // private int[] userImageStatusText;
 
 
-    public AdapterProgram(String[] data , String[] StatusText )
-    //, String[] ServiceData , String[] addressData , String[] StatusText, int[] ImageStatusText){
+    public AdapterProgram(String[] data , String[] StatusText , String[] StepsData  )
+    //, String[] StepsData , String[] addressData , String[] StatusText, int[] ImageStatusText){
 
     {  this.userNameData = data;
-       // this.userServiceData = ServiceData;
+        this.userStepsData = StepsData;
       //  this.userAddressData = addressData;
         this.userStatusText = StatusText;
       //  this.userImageStatusText = ImageStatusText;
@@ -40,14 +40,14 @@ public class AdapterProgram extends RecyclerView.Adapter<AdapterProgram.ProgramV
     @Override
     public void onBindViewHolder(@NonNull ProgramViewHolder programViewHolder, int i) {
         String name = userNameData[i];
-       // String service = userServiceData[i];
+        String steps = userStepsData[i];
       //  String address = userAddressData[i];
         String statusT = userStatusText[i];
      //   int imageStatusT = userImageStatusText[i];
 
 
         programViewHolder.textView.setText(name);
-       // programViewHolder.textDataView.setText(service);
+        programViewHolder.textDataView.setText(steps);
      //   programViewHolder.textAddressView.setText(address);
         programViewHolder.textStatusView.setText(statusT);
 
@@ -73,7 +73,7 @@ public class AdapterProgram extends RecyclerView.Adapter<AdapterProgram.ProgramV
 
          //   imgview = (ImageView) itemView.findViewById(R.id.statusImageView);
             textView = (TextView) itemView.findViewById(R.id.textView);
-        //    textDataView = (TextView) itemView.findViewById(R.id.textView2);
+            textDataView = (TextView) itemView.findViewById(R.id.textView2);
          //   textAddressView = (TextView) itemView.findViewById(R.id.AddressTextView);
             textStatusView = (TextView) itemView.findViewById(R.id.statusView);
 
