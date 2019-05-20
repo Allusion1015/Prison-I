@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         prisonerLoginIntent=new Intent(getApplicationContext(),prisoner_Login_W.class);
   //      AdminSignUpIntent = new Intent(getApplicationContext(),AdminSignUp.class);
 //=======
-        AdminSignUpIntent = new Intent(getApplicationContext(),Prisoners_NavDrawAct.class);
+        AdminSignUpIntent = new Intent(getApplicationContext(),LivelocationOfprisoners.class);
 //>>>>>>> master
         //SignUPIntent = new Intent(getApplicationContext(),SignUp_Activity.class);
 
