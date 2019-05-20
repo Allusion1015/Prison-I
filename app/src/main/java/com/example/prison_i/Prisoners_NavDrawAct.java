@@ -2,8 +2,12 @@ package com.example.prison_i;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,10 +18,47 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class Prisoners_NavDrawAct extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Intent signUpIntent;
+//<<<<<<< AkanshA0
     String adminId;
+//=======
+    RecyclerView recyclerView;
+    String[] NameArray = {"","","",""};
+    String[] EmailArray = {"","","",""};
+    String[] StepsArray = {"","","",""};
+    String[] PrisonersLocationLAT = {"","","",""};
+    String[] PrisonersLocationLONG = {"","","",""};
+    int[] locBoundCheck = {0,0,0,0};
+    List<PrisonerUID> PrisonerUIDlist;
+
+
+
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
+    int counter = 0;
+  //  ArrayList<String> prisonerNames;
+   // ArrayList<String> prisonerEmail;
+   // ArrayList<String> prisonerStepCount;
+
+
+
+
+
+//>>>>>>> master
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,9 +66,68 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
 
         Intent intent=getIntent();
         adminId=intent.getStringExtra("UId");
+        adminId = "oiOWeQSV5NSI2rI4vUjYQp1nvE52";   // for test purpose
 
         setTitle("Prisoners");
         signUpIntent=new Intent(getApplicationContext(),SignUp_Activity.class);
+
+        PrisonerUIDlist = new ArrayList<>();
+        recyclerView = (RecyclerView)findViewById(R.id.RecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("ADMIN/"+adminId+"/prisonerData");
+
+
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                int NumberOfPrisoners = (int)dataSnapshot.getChildrenCount();
+
+                Iterable<DataSnapshot> chlNames = dataSnapshot.getChildren();
+                Log.i("No. of Prisoners", String.valueOf(NumberOfPrisoners) );
+               // prisonerNames = new ArrayList<String>();
+               // prisonerEmail = new ArrayList<String>();
+               // prisonerStepCount = new ArrayList<String>();
+                counter = 0;
+                for (DataSnapshot contact : chlNames) {
+                   // prisonerNames.add(dataSnapshot.child(contact.getKey()).child("Email").getValue().toString());
+                    //prisonerEmail.add(dataSnapshot.child(contact.getKey()).child("Name").getValue().toString());
+
+                    NameArray[counter] = dataSnapshot.child(contact.getKey()).child("Name").getValue().toString();
+                    EmailArray[counter] = dataSnapshot.child(contact.getKey()).child("Email").getValue().toString();
+                    StepsArray[counter] =  dataSnapshot.child(contact.getKey()).child("StepCount").getValue().toString();
+                    PrisonersLocationLAT[counter] = dataSnapshot.child(contact.getKey()).child("Location").child("latitude").getValue().toString();
+                    PrisonersLocationLONG[counter] = dataSnapshot.child(contact.getKey()).child("Location").child("longitude").getValue().toString();
+
+                    if(Float.valueOf(PrisonersLocationLONG[counter]) > 77.93539644 || Float.valueOf(PrisonersLocationLONG[counter]) < 77.93519482 || Float.valueOf(PrisonersLocationLAT[counter]) < 30.40486298 || Float.valueOf(PrisonersLocationLAT[counter]) > 30.40506298 )
+                    {
+                        locBoundCheck[counter] = 1; // Alarm needed
+                    }else{
+                        locBoundCheck[counter] = 0;
+                    }
+
+                    Log.d("prisonersID :: ",  PrisonersLocationLAT[counter] +"      " + PrisonersLocationLONG[counter] );
+                    counter++;
+
+                }
+                recyclerView.setAdapter(new AdapterProgram(NameArray,EmailArray,StepsArray,locBoundCheck));
+
+              }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -49,7 +149,14 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        recyclerView.setAdapter(new AdapterProgram(NameArray,EmailArray,StepsArray,locBoundCheck));
     }
+
+
+
+
 
     @Override
     public void onBackPressed() {
@@ -61,12 +168,19 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
         }
     }
 
+
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.prisoners__nav_draw, menu);
         return true;
     }
+
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -82,6 +196,9 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -109,4 +226,6 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 }
