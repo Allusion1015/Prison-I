@@ -131,6 +131,24 @@
         app:layout_constraintVertical_bias="0.416" />
 
     <ImageView
+        android:id="@+id/AlertRedButton"
+        android:layout_width="27dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/statusView"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/redbutton" />
+
+    <ImageView
         android:id="@+id/statusImageView"
         android:layout_width="27dp"
         android:layout_height="27dp"

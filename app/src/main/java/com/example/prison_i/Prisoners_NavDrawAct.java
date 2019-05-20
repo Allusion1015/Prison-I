@@ -40,7 +40,9 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
     String[] NameArray = {"","","",""};
     String[] EmailArray = {"","","",""};
     String[] StepsArray = {"","","",""};
-    String[] PrisonersKeyValue;
+    String[] PrisonersLocationLAT = {"","","",""};
+    String[] PrisonersLocationLONG = {"","","",""};
+    int[] locBoundCheck = {0,0,0,0};
     List<PrisonerUID> PrisonerUIDlist;
 
 
@@ -48,9 +50,9 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     int counter = 0;
-    ArrayList<String> prisonerNames;
-    ArrayList<String> prisonerEmail;
-    ArrayList<String> prisonerStepCount;
+  //  ArrayList<String> prisonerNames;
+   // ArrayList<String> prisonerEmail;
+   // ArrayList<String> prisonerStepCount;
 
 
 
@@ -64,6 +66,7 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
 
         Intent intent=getIntent();
         adminId=intent.getStringExtra("UId");
+        adminId = "oiOWeQSV5NSI2rI4vUjYQp1nvE52";   // for test purpose
 
         setTitle("Prisoners");
         signUpIntent=new Intent(getApplicationContext(),SignUp_Activity.class);
@@ -85,9 +88,9 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
 
                 Iterable<DataSnapshot> chlNames = dataSnapshot.getChildren();
                 Log.i("No. of Prisoners", String.valueOf(NumberOfPrisoners) );
-                prisonerNames = new ArrayList<String>();
-                prisonerEmail = new ArrayList<String>();
-                prisonerStepCount = new ArrayList<String>();
+               // prisonerNames = new ArrayList<String>();
+               // prisonerEmail = new ArrayList<String>();
+               // prisonerStepCount = new ArrayList<String>();
                 counter = 0;
                 for (DataSnapshot contact : chlNames) {
                    // prisonerNames.add(dataSnapshot.child(contact.getKey()).child("Email").getValue().toString());
@@ -96,11 +99,21 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
                     NameArray[counter] = dataSnapshot.child(contact.getKey()).child("Name").getValue().toString();
                     EmailArray[counter] = dataSnapshot.child(contact.getKey()).child("Email").getValue().toString();
                     StepsArray[counter] =  dataSnapshot.child(contact.getKey()).child("StepCount").getValue().toString();
-                    Log.d("prisonersID :: ",  NameArray[counter] +"      " + EmailArray[counter] );
+                    PrisonersLocationLAT[counter] = dataSnapshot.child(contact.getKey()).child("Location").child("latitude").getValue().toString();
+                    PrisonersLocationLONG[counter] = dataSnapshot.child(contact.getKey()).child("Location").child("longitude").getValue().toString();
+
+                    if(Float.valueOf(PrisonersLocationLONG[counter]) > 77.93539644 || Float.valueOf(PrisonersLocationLONG[counter]) < 77.93519482 || Float.valueOf(PrisonersLocationLAT[counter]) < 30.40486298 || Float.valueOf(PrisonersLocationLAT[counter]) > 30.40506298 )
+                    {
+                        locBoundCheck[counter] = 1; // Alarm needed
+                    }else{
+                        locBoundCheck[counter] = 0;
+                    }
+
+                    Log.d("prisonersID :: ",  PrisonersLocationLAT[counter] +"      " + PrisonersLocationLONG[counter] );
                     counter++;
 
                 }
-                recyclerView.setAdapter(new AdapterProgram(NameArray,EmailArray,StepsArray));
+                recyclerView.setAdapter(new AdapterProgram(NameArray,EmailArray,StepsArray,locBoundCheck));
 
               }
 
@@ -138,7 +151,7 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        recyclerView.setAdapter(new AdapterProgram(NameArray,EmailArray,StepsArray));
+        recyclerView.setAdapter(new AdapterProgram(NameArray,EmailArray,StepsArray,locBoundCheck));
     }
 
 
