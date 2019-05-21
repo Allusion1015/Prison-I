@@ -100,7 +100,7 @@ public class LivelocationOfprisoners extends FragmentActivity implements OnMapRe
                                                                 locBoundCheck= 0;
                                                             }
 
-                                                            Log.d("prisonersID :: ",  PrisonersLocationLAT +"      " + PrisonersLocationLONG );
+                                                            Log.d("prisonersLOC :: ",  PrisonersLocationLAT +"      " + PrisonersLocationLONG );
 
                                                             PrisonerlatLng = new LatLng(Double.valueOf(PrisonersLocationLAT),Double.valueOf(PrisonersLocationLONG));
 
@@ -143,6 +143,10 @@ public class LivelocationOfprisoners extends FragmentActivity implements OnMapRe
 
             }
         };
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
     }
 
 
