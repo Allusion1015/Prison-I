@@ -89,15 +89,7 @@ public class prisoner_Login_W extends AppCompatActivity implements SensorEventLi
 
         imageView = findViewById(R.id.ImageViewPanel);
         Loginbutton = (Button) findViewById(R.id.loginButton);
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }
-        else {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
-            locationSet = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        }
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
@@ -123,6 +115,16 @@ public class prisoner_Login_W extends AppCompatActivity implements SensorEventLi
 
             }
         };
+
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
+        else {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
+            locationSet = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        }
 
     }
 
