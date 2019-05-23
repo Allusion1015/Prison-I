@@ -2,6 +2,7 @@ package com.example.prison_i;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -72,9 +73,9 @@ public class LivelocationOfprisoners extends FragmentActivity implements OnMapRe
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-
-        adminId = "oiOWeQSV5NSI2rI4vUjYQp1nvE52";   // for test purpose
-        prisonerID = "TqlROxGFlxNR1TNuKjbhtlJYrPV2";
+        Intent intent=getIntent();
+        adminId =intent.getStringExtra("adminUid");
+        prisonerID = intent.getStringExtra("prisonerUid");
 
 
 
