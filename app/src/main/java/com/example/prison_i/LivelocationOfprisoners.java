@@ -60,6 +60,8 @@ public class LivelocationOfprisoners extends FragmentActivity implements OnMapRe
     int locBoundCheck;
     Marker m1;
     LatLng PrisonerlatLng;
+    Marker m2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +92,7 @@ public class LivelocationOfprisoners extends FragmentActivity implements OnMapRe
                                                         Iterable<DataSnapshot> chlNames = dataSnapshot.getChildren();
                                                         Log.i("No. of Prisoners", String.valueOf(NumberOfPrisoners) );
 
+
                                                             PrisonersLocationLAT = dataSnapshot.child("Location").child("latitude").getValue().toString();
                                                             PrisonersLocationLONG = dataSnapshot.child("Location").child("longitude").getValue().toString();
 
@@ -104,8 +107,11 @@ public class LivelocationOfprisoners extends FragmentActivity implements OnMapRe
 
                                                             PrisonerlatLng = new LatLng(Double.valueOf(PrisonersLocationLAT),Double.valueOf(PrisonersLocationLONG));
 
+                                                            mMap2.clear();
+
                                                        m1 = mMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)).position(PrisonerlatLng).title("My Location"));
-                                                      //   mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(PrisonerlatLng, 15 ));
+                                                       if (latLong != null){m2 =  mMap.addMarker(new MarkerOptions().position(latLong));}
+                                                       //   mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(PrisonerlatLng, 15 ));
 
                                                         }
 
@@ -194,7 +200,6 @@ public class LivelocationOfprisoners extends FragmentActivity implements OnMapRe
         }
     }
     public void UpdateLocationChangeInfo(Location location) {
-        Marker m2;
 
         latLong = new LatLng(location.getLatitude(), location.getLongitude());
         // mMap.moveCamera(CameraUpdateFactory.newLatLng(latLong));
