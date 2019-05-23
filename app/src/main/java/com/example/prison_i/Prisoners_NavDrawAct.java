@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 
 import com.google.firebase.database.DataSnapshot;
@@ -152,6 +153,18 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
 
 
         recyclerView.setAdapter(new AdapterProgram(NameArray,EmailArray,StepsArray,locBoundCheck));
+
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Toast.makeText(Prisoners_NavDrawAct.this, String.valueOf(position), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onLongItemClick(View view, int position) {
+
+            }
+        }));
     }
 
 
