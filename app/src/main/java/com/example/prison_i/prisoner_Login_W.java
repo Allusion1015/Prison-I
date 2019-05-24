@@ -164,10 +164,9 @@ public class prisoner_Login_W extends AppCompatActivity implements SensorEventLi
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (activityRunning) {
-            stepView.setText(String.valueOf(event.values[0]));
             if (loginSuccess) {
                 if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
-
+                    stepView.setText(String.valueOf(event.values[0]));
                     databaseReference2.child("StepCount").setValue(String.valueOf(event.values[0]));
                 }
                 databaseReference2.child("Location").setValue(locationSet);
@@ -182,9 +181,10 @@ public class prisoner_Login_W extends AppCompatActivity implements SensorEventLi
                 Toast.makeText(getApplicationContext(), "near", Toast.LENGTH_SHORT).show();
             } else {
                 //far
-                WatchOnBodyisTrue = false;
-                databaseReference2.child("WatchOnBodyisTrue").setValue(WatchOnBodyisTrue);
-
+                if(loginSuccess) {
+                    WatchOnBodyisTrue = false;
+                    databaseReference2.child("WatchOnBodyisTrue").setValue(WatchOnBodyisTrue);
+                }
                 Toast.makeText(getApplicationContext(), "far", Toast.LENGTH_SHORT).show();
             }
         }

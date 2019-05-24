@@ -44,6 +44,7 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
     String[] PrisonersLocationLAT = {"","","",""};
     String[] PrisonersLocationLONG = {"","","",""};
     String[] prisonerUid={"","","",""};
+    Boolean[] WatchOnBodyisTrue = {false,false,false,false};
     int[] locBoundCheck = {0,0,0,0};
     List<PrisonerUID> PrisonerUIDlist;
 
@@ -67,7 +68,7 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
 
         Intent intent=getIntent();
         adminId=intent.getStringExtra("UId");
-        adminId = "oiOWeQSV5NSI2rI4vUjYQp1nvE52";   // for test purpose
+      //  adminId = "oiOWeQSV5NSI2rI4vUjYQp1nvE52";   // for test purpose
 
         intentPrisonerDetail=new Intent(getApplicationContext(),prisonerDetailAct.class);
         setTitle("Prisoners");
@@ -104,8 +105,12 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
                     StepsArray[counter] =  dataSnapshot.child(contact.getKey()).child("StepCount").getValue().toString();
                     PrisonersLocationLAT[counter] = dataSnapshot.child(contact.getKey()).child("Location").child("latitude").getValue().toString();
                     PrisonersLocationLONG[counter] = dataSnapshot.child(contact.getKey()).child("Location").child("longitude").getValue().toString();
+                    String WatchOnPrisoner =  dataSnapshot.child(contact.getKey()).child("WatchOnBodyisTrue").getValue().toString();
 
-                    if(Float.valueOf(PrisonersLocationLONG[counter]) > 77.93539644 || Float.valueOf(PrisonersLocationLONG[counter]) < 77.93519482 || Float.valueOf(PrisonersLocationLAT[counter]) < 30.40486298 || Float.valueOf(PrisonersLocationLAT[counter]) > 30.40506298 )
+                    if(WatchOnPrisoner.equals("true")){WatchOnBodyisTrue[counter] = true; }
+                    else{WatchOnBodyisTrue[counter] = false;}
+
+                    if(Float.valueOf(PrisonersLocationLONG[counter]) > 77.94528644 || Float.valueOf(PrisonersLocationLONG[counter]) < 77.92528644 || Float.valueOf(PrisonersLocationLAT[counter]) < 30.39496298 || Float.valueOf(PrisonersLocationLAT[counter]) > 30.41496298 || !WatchOnBodyisTrue[counter] )
                     {
                         locBoundCheck[counter] = 1; // Alarm needed
                     }else{
