@@ -43,11 +43,11 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
     String[] StepsArray = {"","","",""};
     String[] PrisonersLocationLAT = {"","","",""};
     String[] PrisonersLocationLONG = {"","","",""};
+    String[] prisonerUid={"","","",""};
     int[] locBoundCheck = {0,0,0,0};
     List<PrisonerUID> PrisonerUIDlist;
 
-
-
+    Intent intentPrisonerDetail;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     int counter = 0;
@@ -69,6 +69,7 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
         adminId=intent.getStringExtra("UId");
         adminId = "oiOWeQSV5NSI2rI4vUjYQp1nvE52";   // for test purpose
 
+        intentPrisonerDetail=new Intent(getApplicationContext(),prisonerDetailAct.class);
         setTitle("Prisoners");
         signUpIntent=new Intent(getApplicationContext(),SignUp_Activity.class);
 
@@ -97,6 +98,7 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
                    // prisonerNames.add(dataSnapshot.child(contact.getKey()).child("Email").getValue().toString());
                     //prisonerEmail.add(dataSnapshot.child(contact.getKey()).child("Name").getValue().toString());
 
+                    prisonerUid[counter]=contact.getKey();
                     NameArray[counter] = dataSnapshot.child(contact.getKey()).child("Name").getValue().toString();
                     EmailArray[counter] = dataSnapshot.child(contact.getKey()).child("Email").getValue().toString();
                     StepsArray[counter] =  dataSnapshot.child(contact.getKey()).child("StepCount").getValue().toString();
@@ -158,6 +160,10 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
             @Override
             public void onItemClick(View view, int position) {
                 Toast.makeText(Prisoners_NavDrawAct.this, String.valueOf(position), Toast.LENGTH_SHORT).show();
+
+                intentPrisonerDetail.putExtra("adminUid",adminId);
+                intentPrisonerDetail.putExtra("prisonerUid",prisonerUid[position]);
+                startActivity(intentPrisonerDetail);
             }
 
             @Override
