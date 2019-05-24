@@ -57,9 +57,13 @@ public class prisoner_Login_W extends AppCompatActivity implements SensorEventLi
     LocationManager locationManager;
     LocationListener locationListener;
 
-    String addressLine;
+    private SensorManager mSensorManager;
+    private Sensor mProximity;
+    private static final int SENSOR_SENSITIVITY = 4;
+
 
     boolean loginSuccess;
+    boolean WatchOnBodyisTrue;
 
     private SensorManager sensorManager;
     boolean activityRunning;
@@ -79,6 +83,7 @@ public class prisoner_Login_W extends AppCompatActivity implements SensorEventLi
         setTitle("Prisoner Login");
         usernameEditText = (EditText) findViewById(R.id.usernameEditText);
         passwordEditText = (EditText) findViewById(R.id.passwordEditText);
+        WatchOnBodyisTrue = true;
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         stepView = (TextView) findViewById(R.id.stepView);
@@ -126,6 +131,9 @@ public class prisoner_Login_W extends AppCompatActivity implements SensorEventLi
             locationSet = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         }
 
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+
     }
 
     @Override
@@ -138,6 +146,9 @@ public class prisoner_Login_W extends AppCompatActivity implements SensorEventLi
         } else {
             Toast.makeText(prisoner_Login_W.this, "SENSOR_NOT_AVAILABLE", Toast.LENGTH_SHORT).show();
         }
+
+        mSensorManager.registerListener(this, mProximity, SensorManager.SENSOR_DELAY_NORMAL);
+
     }
 
 
@@ -146,6 +157,8 @@ public class prisoner_Login_W extends AppCompatActivity implements SensorEventLi
         super.onPause();
         activityRunning = false;
 
+
+        mSensorManager.unregisterListener(this);
     }
 
     @Override
@@ -153,9 +166,26 @@ public class prisoner_Login_W extends AppCompatActivity implements SensorEventLi
         if (activityRunning) {
             stepView.setText(String.valueOf(event.values[0]));
             if (loginSuccess) {
-                databaseReference2.child("StepCount").setValue(String.valueOf(event.values[0]));
+                if (event.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
+
+                    databaseReference2.child("StepCount").setValue(String.valueOf(event.values[0]));
+                }
                 databaseReference2.child("Location").setValue(locationSet);
-                Log.i("location ", locationSet.toString());
+               // Log.i("location ", locationSet.toString());
+            }
+        }
+
+
+        if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
+            if (event.values[0] >= -SENSOR_SENSITIVITY && event.values[0] <= SENSOR_SENSITIVITY) {
+                //near
+                Toast.makeText(getApplicationContext(), "near", Toast.LENGTH_SHORT).show();
+            } else {
+                //far
+                WatchOnBodyisTrue = false;
+                databaseReference2.child("WatchOnBodyisTrue").setValue(WatchOnBodyisTrue);
+
+                Toast.makeText(getApplicationContext(), "far", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -220,6 +250,7 @@ public class prisoner_Login_W extends AppCompatActivity implements SensorEventLi
                                         AdminOfPrisoner = FindAdminId(user, adminUID, prisonerUID);
 
                                         databaseReference2 = firebaseDatabase2.getReference("ADMIN/" + AdminOfPrisoner + "/prisonerData/" + curUsrId);
+                                        databaseReference2.child("WatchOnBodyisTrue").setValue(WatchOnBodyisTrue);
 
                                     }
 

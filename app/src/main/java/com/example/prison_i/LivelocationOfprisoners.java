@@ -44,14 +44,7 @@ public class LivelocationOfprisoners extends FragmentActivity implements OnMapRe
     LocationManager locationManager;
     LocationListener locationListener;
     LatLng latLong;
-    LatLng latLong2;
     String addressLine;
-    String addressLine2beStored;
-    LatLng latLngToBeStored;
-    String ObjIdParseServer;
-    final Double[] Latitude = new Double[1];
-    final Double[] Longitude = new Double[1];
-    String RecipUsrName;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     String adminId;
@@ -72,6 +65,10 @@ public class LivelocationOfprisoners extends FragmentActivity implements OnMapRe
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
 
         Intent intent=getIntent();
         adminId =intent.getStringExtra("adminUid");
