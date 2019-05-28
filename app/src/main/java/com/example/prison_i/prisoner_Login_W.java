@@ -100,6 +100,7 @@ public class prisoner_Login_W extends AppCompatActivity implements SensorEventLi
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                
 
                 Log.i("info :", "location");
                 locationSet = location;
@@ -176,16 +177,21 @@ public class prisoner_Login_W extends AppCompatActivity implements SensorEventLi
 
 
         if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
-            if (event.values[0] >= -SENSOR_SENSITIVITY && event.values[0] <= SENSOR_SENSITIVITY) {
-                //near
-                Toast.makeText(getApplicationContext(), "near", Toast.LENGTH_SHORT).show();
-            } else {
-                //far
-                if(loginSuccess) {
+            if(loginSuccess) {
+                if (event.values[0] >= -SENSOR_SENSITIVITY && event.values[0] <= SENSOR_SENSITIVITY) {
+                    //near
+                    WatchOnBodyisTrue = true;
+                    databaseReference2.child("WatchOnBodyisTrue").setValue(WatchOnBodyisTrue);
+
+                    Toast.makeText(getApplicationContext(), "near", Toast.LENGTH_SHORT).show();
+                } else {
+                    //far
+
                     WatchOnBodyisTrue = false;
                     databaseReference2.child("WatchOnBodyisTrue").setValue(WatchOnBodyisTrue);
+
+                    Toast.makeText(getApplicationContext(), "far", Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(getApplicationContext(), "far", Toast.LENGTH_SHORT).show();
             }
         }
     }
