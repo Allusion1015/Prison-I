@@ -1,7 +1,9 @@
 package com.example.prison_i;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 
@@ -47,11 +50,13 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
     Boolean[] WatchOnBodyisTrue = {false,false,false,false};
     int[] locBoundCheck = {0,0,0,0};
     List<PrisonerUID> PrisonerUIDlist;
+    MediaPlayer audio;
 
     Intent intentPrisonerDetail;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     int counter = 0;
+    boolean isAlarmNeeded;
   //  ArrayList<String> prisonerNames;
    // ArrayList<String> prisonerEmail;
    // ArrayList<String> prisonerStepCount;
@@ -81,6 +86,7 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("ADMIN/"+adminId+"/prisonerData");
 
+        audio = MediaPlayer.create(this, R.raw.alarm );
 
 
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -113,8 +119,22 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
                     if(Float.valueOf(PrisonersLocationLONG[counter]) > 77.97683122 || Float.valueOf(PrisonersLocationLONG[counter]) < 77.95683122 || Float.valueOf(PrisonersLocationLAT[counter]) < 30.40718828 || Float.valueOf(PrisonersLocationLAT[counter]) > 30.42718828 || !WatchOnBodyisTrue[counter] )
                     {
                         locBoundCheck[counter] = 1; // Alarm needed
+                       isAlarmNeeded=true;
+
                     }else{
                         locBoundCheck[counter] = 0;
+                        isAlarmNeeded=false;
+                    }
+
+                    if(isAlarmNeeded){
+                        if(!audio.isPlaying()) {
+                            audio.start();
+                        }
+                    }else{
+                        if(audio.isPlaying()) {
+                            audio.stop();
+                        }
+
                     }
 
                     Log.d("prisonersID :: ",  PrisonersLocationLAT[counter] +"      " + PrisonersLocationLONG[counter] );
