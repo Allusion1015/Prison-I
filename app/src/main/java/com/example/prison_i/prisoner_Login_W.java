@@ -100,7 +100,7 @@ public class prisoner_Login_W extends AppCompatActivity implements SensorEventLi
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                
+
 
                 Log.i("info :", "location");
                 locationSet = location;

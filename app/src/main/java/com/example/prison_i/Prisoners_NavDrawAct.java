@@ -110,7 +110,7 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
                     if(WatchOnPrisoner.equals("true")){WatchOnBodyisTrue[counter] = true; }
                     else{WatchOnBodyisTrue[counter] = false;}
 
-                    if(Float.valueOf(PrisonersLocationLONG[counter]) > 77.94528644 || Float.valueOf(PrisonersLocationLONG[counter]) < 77.92528644 || Float.valueOf(PrisonersLocationLAT[counter]) < 30.39496298 || Float.valueOf(PrisonersLocationLAT[counter]) > 30.41496298 || !WatchOnBodyisTrue[counter] )
+                    if(Float.valueOf(PrisonersLocationLONG[counter]) > 77.97683122 || Float.valueOf(PrisonersLocationLONG[counter]) < 77.95683122 || Float.valueOf(PrisonersLocationLAT[counter]) < 30.40718828 || Float.valueOf(PrisonersLocationLAT[counter]) > 30.42718828 || !WatchOnBodyisTrue[counter] )
                     {
                         locBoundCheck[counter] = 1; // Alarm needed
                     }else{
