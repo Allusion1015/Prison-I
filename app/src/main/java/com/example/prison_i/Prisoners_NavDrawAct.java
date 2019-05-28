@@ -86,12 +86,13 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("ADMIN/"+adminId+"/prisonerData");
 
-        audio = MediaPlayer.create(this, R.raw.alarm );
 
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                funtoCreateAudio();
 
                 int NumberOfPrisoners = (int)dataSnapshot.getChildrenCount();
 
@@ -126,21 +127,24 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
                         isAlarmNeeded=false;
                     }
 
-                    if(isAlarmNeeded){
-                        if(!audio.isPlaying()) {
-                            audio.start();
-                        }
-                    }else{
-                        if(audio.isPlaying()) {
-                            audio.stop();
-                        }
 
-                    }
 
                     Log.d("prisonersID :: ",  PrisonersLocationLAT[counter] +"      " + PrisonersLocationLONG[counter] );
                     counter++;
 
                 }
+                if(isAlarmNeeded){
+                    if(!audio.isPlaying()) {
+                        audio.start();
+
+
+                    }
+                }else{
+
+                        audio.stop();
+
+                }
+
                 recyclerView.setAdapter(new AdapterProgram(NameArray,EmailArray,StepsArray,locBoundCheck));
 
               }
@@ -269,6 +273,11 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void funtoCreateAudio(){
+        audio = MediaPlayer.create(this, R.raw.alarm );
+
     }
 
 
