@@ -52,10 +52,10 @@ public class AdapterProgram extends RecyclerView.Adapter<AdapterProgram.ProgramV
         programViewHolder.textView.setText(name);
         programViewHolder.textDataView.setText(steps);
      //   programViewHolder.textAddressView.setText(address);
-        programViewHolder.textStatusView.setText(statusT);
+       // programViewHolder.textStatusView.setText(statusT);
 
         if(imageStatusT == 0){programViewHolder.imgview.setImageResource(R.drawable.greenbutton); }
-        else if(imageStatusT == 1){programViewHolder.imgview.setImageResource(R.drawable.bulebutton);
+        else if(imageStatusT == 1){programViewHolder.imgview.setImageResource(R.drawable.redbutton);
             Animation animation = new AlphaAnimation(1, 0); //to change visibility from visible to invisible
             animation.setDuration(500); //1 second duration for each animation cycle
             animation.setInterpolator(new LinearInterpolator());
