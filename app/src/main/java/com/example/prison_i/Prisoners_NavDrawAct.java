@@ -132,7 +132,7 @@ public class Prisoners_NavDrawAct extends AppCompatActivity
                         }
                     }else{
                         if(audio.isPlaying()) {
-                            audio.stop();
+                            audio.pause();
                         }
 
                     }
