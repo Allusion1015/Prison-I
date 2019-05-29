@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "568997200749",
+    "firebase_url": "https://prison-i.firebaseio.com",
+    "project_id": "prison-i",
+    "storage_bucket": "prison-i.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:568997200749:android:0c20802aab7a5a1f",
+        "android_client_info": {
+          "package_name": "com.example.prison_i"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "568997200749-nm7nb1ivgmforbfnp76u06f9li2jf277.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.prison_i",
+            "certificate_hash": "d30260c1f1a852da6bbc00698ee7fdabf487cfe9"
+          }
+        },
+        {
+          "client_id": "568997200749-p1jhlpedgse5inhvvevc20hunl5p8qpo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG_5Jhfl1wfl1IZeKbqQQAKZzawGDkTy0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "568997200749-p1jhlpedgse5inhvvevc20hunl5p8qpo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
